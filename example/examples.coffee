@@ -4,6 +4,20 @@ require.paths.unshift __dirname
 
 
 
+# with coffeescript the utility functions are even more handy
+
+timer 200, -> console.log 'hello'
+
+timer [500,200], -> console.log 'hello after 500ms and 700ms'
+
+# BONG every 30min at even time slots (0:00, 0:30, ..)
+{clear} = timer.auto 10*1000, -> console.log 'BONG', +new Date
+# end the BONG interval after 5h
+timer 20*1000, clear
+
+return
+
+
 ## simple usage:
 do ->
 	# say hello after 150ms

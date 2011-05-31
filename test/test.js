@@ -1,8 +1,12 @@
 (function() {
-  var AssertSequence, assert, assertEqual, clearTimer, test4, timer, _ref;
+  var AssertSequence, assert, assertEqual, test4, timer;
   var __slice = Array.prototype.slice;
-  require.paths.unshift(__dirname);
-  _ref = require('../timer.js'), timer = _ref.timer, clearTimer = _ref.clearTimer;
+  if (typeof require !== "undefined" && require !== null) {
+    require.paths.unshift(__dirname);
+    timer = require('../timer.js').timer;
+  } else if (typeof window !== "undefined" && window !== null) {
+    timer = window.timer;
+  }
   assertEqual = function(msg, x, y) {
     if (x !== y) {
       return console.error(msg, x, y);
@@ -47,7 +51,7 @@
       clear = timer(10, seq('timer 10')).clear;
       clear();
       o = timer(10, seq('timer 10'));
-      return clearTimer(o);
+      return timer.clear(o);
     }), 210);
   })();
   (function() {
@@ -60,9 +64,9 @@
     timer(110, function() {
       return clear();
     });
-    o = timer(null, 10, seq('10ms timer - should trigger once', 2));
+    o = timer.interval(10, seq('10ms timer - should trigger once', 2));
     return timer(15, function() {
-      return clearTimer(o);
+      return timer.clear(o);
     });
   })();
   (function() {
@@ -82,7 +86,7 @@
     var clear, j, seq;
     seq = AssertSequence('#4.' + (i || 0) + ' auto adjusting interval');
     j = 1;
-    clear = timer(void 0, 3000, function() {
+    clear = timer.auto(3000, function() {
       var adj;
       seq('adjusted interval', ++j)();
       adj = Date.now() % 3000;
@@ -106,9 +110,7 @@
     var clear, j, seq;
     seq = AssertSequence('#4 auto adjusting interval');
     j = 1;
-    clear = timer({
-      auto: 1
-    }, 3000, function() {
+    clear = timer.auto(3000, function() {
       var adj;
       seq('adjusted interval', ++j)();
       adj = Date.now() % 3000;

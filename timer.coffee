@@ -1,12 +1,10 @@
 
-exports.timer = (timeouts,interval,cb) ->
+timer = (timeouts,interval,cb) ->
 	if cb is undefined
 		cb = interval
 		interval = null
 	
-	if timeouts?.auto or timeouts is undefined
-		timeouts = [ interval - Date.now() % interval ]
-	else if typeof timeouts is 'number'
+	if typeof timeouts is 'number'
 		timeouts = [ timeouts ]
 		
 	timeouts_l = timeouts?.length or 0
@@ -24,9 +22,16 @@ exports.timer = (timeouts,interval,cb) ->
 			entry.interval = setInterval cb,interval
 
 	return entry
-		
 
-exports.clearTimer = clearTimer = (entry) ->
+
+timer.auto = (interval, cb) ->
+	return timer interval-Date.now()%interval,interval, cb
+
+timer.interval = (interval,cb) ->
+	return timer null,interval,cb
+
+
+timer.clear = clearTimer = (entry) ->
 	if entry?.timeout
 		clearTimeout entry.timeout
 		delete entry.timeout
@@ -34,3 +39,8 @@ exports.clearTimer = clearTimer = (entry) ->
 		clearInterval entry.interval
 		delete entry.interval
 	
+
+exports.timer = timer if exports?
+
+define? [], -> {timer}
+window.timer=timer if window? 

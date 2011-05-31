@@ -1,15 +1,15 @@
 {
   "author": "Markus Sieber <sieber.m@gmail.com>",
   "name": "timer",
-  "description": "simple utility to simplifiy and chain using setTimeout/setInterval",
-  "version": "0.0.1",
+  "description": "utility function to simplify using combinations of setTimeout/setInterval.",
+  "version": "0.0.2",
   "repository": {
     "type": "git",
     "url": "git://github.com/markussieber/timer.git"
   },
   "main": "timer.js",
   "engines": {
-    "node": "~v0.4.7"
+    "node": ">=0.0.1"
   },
   "dependencies": {},
   "devDependencies": {}

@@ -1,8 +1,13 @@
 
 
-require.paths.unshift __dirname
-{timer,clearTimer} = require '../timer.js'
-
+# load timer via require if possible otherwise it should be in the global scope (browsers)
+# TODO need to test loading it via requirejs
+if require?
+	require.paths.unshift __dirname
+	{timer} = require '../timer.js'
+else if window?
+	{timer} = window
+	
 
 assertEqual = (msg,x,y) -> console.error(msg, x, y) if x isnt y
 assert = (b,msg) -> console.error msg ? 'assertion failed' if not b
@@ -45,7 +50,7 @@ do ->
 		do clear
 	
 		o = timer 10, seq 'timer 10'
-		clearTimer o
+		timer.clear o
 		
 	
 	), 210
@@ -65,8 +70,8 @@ do ->
 	timer 110, seq '2',6
 	timer 110, -> do clear
 
-	o = timer null,10,seq '10ms timer - should trigger once', 2
-	timer 15, -> clearTimer o
+	o = timer.interval 10,seq '10ms timer - should trigger once', 2
+	timer 15, -> timer.clear o
 
 
 
@@ -94,7 +99,7 @@ do ->
 do test4 = (i) ->
 	seq = AssertSequence '#4.'+(i||0)+' auto adjusting interval'
 	j = 1
-	{clear} = timer undefined, 3000, ->
+	{clear} = timer.auto 3000, ->
 		do seq 'adjusted interval', ++j
 		# 50ms margin is ok
 		adj = Date.now() % 3000		
@@ -110,7 +115,7 @@ timer parseInt(Math.random()*10000), -> test4 i for i in [1..500]
 do ->
 	seq = AssertSequence '#4 auto adjusting interval'
 	j = 1
-	{clear} = timer {auto:1}, 3000, ->
+	{clear} = timer.auto 3000, ->
 		do seq 'adjusted interval', ++j
 		# 50ms margin is ok
 		adj = Date.now() % 3000		

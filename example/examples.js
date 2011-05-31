@@ -1,9 +1,20 @@
 (function() {
-  var timer;
+  var clear, timer;
   require.paths.unshift(__dirname);
   timer = require('../timer.js').timer;
+  timer(200, function() {
+    return console.log('hello');
+  });
+  timer([500, 200], function() {
+    return console.log('hello after 500ms and 700ms');
+  });
+  clear = timer.auto(10 * 1000, function() {
+    return console.log('BONG', +new Date);
+  }).clear;
+  timer(20 * 1000, clear);
+  return;
   (function() {
-    var clear, clear2;
+    var clear2;
     timer(150, function() {
       return console.log('hello');
     });
@@ -22,7 +33,7 @@
     }), 1500);
   })();
   timer(2000, function() {
-    var clear, ret;
+    var ret;
     clear = timer([100, 150, 200, 500], function() {
       return console.log((Date.now() % 60000) + ': hello you');
     }).clear;

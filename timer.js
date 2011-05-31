@@ -1,14 +1,12 @@
 (function() {
-  var clearTimer;
-  exports.timer = function(timeouts, interval, cb) {
+  var clearTimer, timer;
+  timer = function(timeouts, interval, cb) {
     var entry, setup, timeouts_i, timeouts_l;
     if (cb === void 0) {
       cb = interval;
       interval = null;
     }
-    if ((timeouts != null ? timeouts.auto : void 0) || timeouts === void 0) {
-      timeouts = [interval - Date.now() % interval];
-    } else if (typeof timeouts === 'number') {
+    if (typeof timeouts === 'number') {
       timeouts = [timeouts];
     }
     timeouts_l = (timeouts != null ? timeouts.length : void 0) || 0;
@@ -31,7 +29,13 @@
     })();
     return entry;
   };
-  exports.clearTimer = clearTimer = function(entry) {
+  timer.auto = function(interval, cb) {
+    return timer(interval - Date.now() % interval, interval, cb);
+  };
+  timer.interval = function(interval, cb) {
+    return timer(null, interval, cb);
+  };
+  timer.clear = clearTimer = function(entry) {
     if (entry != null ? entry.timeout : void 0) {
       clearTimeout(entry.timeout);
       delete entry.timeout;
@@ -41,4 +45,17 @@
       return delete entry.interval;
     }
   };
+  if (typeof exports !== "undefined" && exports !== null) {
+    exports.timer = timer;
+  }
+  if (typeof define === "function") {
+    define([], function() {
+      return {
+        timer: timer
+      };
+    });
+  }
+  if (typeof window !== "undefined" && window !== null) {
+    window.timer = timer;
+  }
 }).call(this);
