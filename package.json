@@ -2,7 +2,7 @@
   "author": "Markus Sieber <sieber.m@gmail.com>",
   "name": "timer",
   "description": "simple utility to simplifiy and chain using setTimeout/setInterval",
-  "version": "0.1",
+  "version": "0.0.1",
   "repository": {
     "type": "git",
     "url": "git://github.com/markussieber/timer.git"
