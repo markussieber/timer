@@ -48,14 +48,14 @@
   if (typeof exports !== "undefined" && exports !== null) {
     exports.timer = timer;
   }
+  if (typeof window !== "undefined" && window !== null) {
+    window.timer = timer;
+  }
   if (typeof define === "function") {
     define([], function() {
       return {
         timer: timer
       };
     });
-  }
-  if (typeof window !== "undefined" && window !== null) {
-    window.timer = timer;
   }
 }).call(this);

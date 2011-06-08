@@ -40,7 +40,6 @@ timer.clear = clearTimer = (entry) ->
 		delete entry.interval
 	
 
-exports.timer = timer if exports?
-
+exports?.timer = timer
+window?.timer = timer
 define? [], -> {timer}
-window.timer=timer if window? 
